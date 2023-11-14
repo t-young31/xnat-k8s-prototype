@@ -1,0 +1,23 @@
+# Secrets
+*config*.y*ml
+*env.*
+*env
+!.env.sample
+id_*
+kube*.y*ml
+.terraformrc
+# Mac
+.DS_Store
+# IDEs
+.idea/
+.vscode/
+# Terraform
+.terraform/
+*.tfstate*
+*.tfvars
+!*.age
+# Temporary
+tmp*
+temp*
+# Cache
+.*cache
