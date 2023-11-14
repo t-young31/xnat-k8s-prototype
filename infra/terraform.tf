@@ -11,15 +11,19 @@ terraform {
       source  = "hashicorp/helm"
       version = "2.11.0"
     }
+
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.25.0"
+    }
+
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "4.10.0"
+    }
   }
 }
 
-provider "helm" {
-  kubernetes {
-    config_path = var.kubeconfig_path
-  }
-}
-
-provider "kubernetes" {
-  config_path = var.kubeconfig_path
+provider "cloudflare" {
+  # Uses $CLOUDFLARE_API_TOKEN
 }

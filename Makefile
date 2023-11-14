@@ -21,11 +21,12 @@ help:
 	grep '.*[:]$$' Makefile
 
 dev:
-	. init.sh && ./dev/create_cluster.sh && \
-	export TF_VAR_kubeconfig_path="$$PWD/$$DEV_KUBECONFIG" && \
 	$(call terraform-apply, ./infra)
 
 dev-destroy:
-	. init.sh && k3d cluster create "$$DEV_CLUSTER_NAME"
+	$(call terraform-destroy, ./infra)
+
+aws-login:
+	aws configure sso
 
 .SILENT:  # all targets

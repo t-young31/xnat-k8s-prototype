@@ -14,3 +14,5 @@ fi
 echo "Exporting variables in ${env_filepath} file into the environment"
 read -ra args < <(grep -v '^#' "$env_filepath" | xargs)
 export "${args[@]}"
+
+export TF_VAR_kubeconfig_path="${SCRIPT_DIR}/${KUBECONFIG}"

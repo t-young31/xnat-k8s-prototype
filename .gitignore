@@ -3,7 +3,7 @@
 *env.*
 *env
 !.env.sample
-id_*
+*id_*
 kube*.y*ml
 .terraformrc
 # Mac
