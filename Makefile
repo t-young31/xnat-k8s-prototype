@@ -22,6 +22,7 @@ help:
 
 aws:
 	$(call terraform-apply, ./infra)
+	. init.sh && echo "Run: export KUBECONFIG=$$KUBECONFIG"
 
 aws-destroy:
 	$(call terraform-destroy, ./infra)
