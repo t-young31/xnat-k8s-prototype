@@ -20,10 +20,10 @@ endef
 help:
 	grep '.*[:]$$' Makefile
 
-dev:
+aws:
 	$(call terraform-apply, ./infra)
 
-dev-destroy:
+aws-destroy:
 	$(call terraform-destroy, ./infra)
 
 aws-login:
