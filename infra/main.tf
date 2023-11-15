@@ -44,6 +44,11 @@ resource "helm_release" "xnat" {
   }
 
   set {
+    name  = "xnat-web.ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/proxy-body-size"
+    value = "0M" # 0 is disabled. See: https://docs.nginx.com/nginx-management-suite/acm/how-to/policies/request-body-size-limit/
+  }
+
+  set {
     name  = "xnat-web.ingress.hosts[0].host"
     value = local.fqdn
   }
@@ -60,7 +65,7 @@ resource "helm_release" "xnat" {
 
   set {
     name  = "xnat-web.plugins.container-service[0].provider.id"
-    value = "null"
+    value = "null" # can be any value..
   }
 
   depends_on = [
