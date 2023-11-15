@@ -1,3 +1,3 @@
-output "fqdn" {
-  value = local.fqdn
+output "url" {
+  value = "https://${local.fqdn}"
 }

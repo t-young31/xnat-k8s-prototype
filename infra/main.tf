@@ -66,6 +66,8 @@ resource "helm_release" "nginx_ingress" {
   chart            = "ingress-nginx"
   version          = "4.7.1"
   create_namespace = true
+
+  depends_on = [helm_release.xnat]
 }
 
 resource "helm_release" "longhorn" {
@@ -100,6 +102,8 @@ resource "helm_release" "longhorn" {
     name  = "longhornUI.replicas"
     value = 1
   }
+
+  depends_on = [null_resource.get_kubeconfig]
 }
 
 resource "null_resource" "unset_local_default_storage_class" {
@@ -113,10 +117,23 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
 EOF
   }
 
-  depends_on = [null_resource.get_kubeconfig]
+  depends_on = [helm_release.longhorn]
 }
 
 resource "random_password" "posgres_password" {
   length  = 32
   special = false
+}
+
+module "container_svc" {
+  source = "./container_svc"
+
+  xnat_namespace           = helm_release.xnat.namespace
+  xnat_web_service_account = "${helm_release.xnat.name}-xnat-web"
+
+  providers = {
+    kubernetes = kubernetes
+  }
+
+  depends_on = [helm_release.xnat]
 }
