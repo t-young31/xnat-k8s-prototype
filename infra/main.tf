@@ -53,6 +53,16 @@ resource "helm_release" "xnat" {
     value = local.fqdn
   }
 
+  set {
+    name  = "xnat-web.image.tag"
+    value = "v1.8.9.1"
+  }
+
+  set {
+    name  = "xnat-web.plugins.container-service[0].provider.id"
+    value = "null"
+  }
+
   depends_on = [
     null_resource.unset_local_default_storage_class,
     helm_release.longhorn

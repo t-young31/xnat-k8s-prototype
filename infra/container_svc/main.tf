@@ -1,9 +1,3 @@
-resource "kubernetes_namespace" "container_svc" {
-  metadata {
-    name = "xnat-container-svc"
-  }
-}
-
 data "kubernetes_service_account" "container_svc" {
   metadata {
     name      = var.xnat_web_service_account
@@ -14,7 +8,7 @@ data "kubernetes_service_account" "container_svc" {
 resource "kubernetes_role" "container_svc" {
   metadata {
     name      = "job-admin"
-    namespace = kubernetes_namespace.container_svc.metadata.0.name
+    namespace = var.xnat_namespace
   }
 
   rule {
@@ -50,12 +44,13 @@ resource "kubernetes_cluster_role" "container_svc" {
 resource "kubernetes_role_binding" "container_svc" {
   metadata {
     name      = "${data.kubernetes_service_account.container_svc.metadata.0.name}-job-binding"
-    namespace = kubernetes_namespace.container_svc.metadata.0.name
+    namespace = var.xnat_namespace
   }
 
   subject {
-    kind = "ServiceAccount"
-    name = data.kubernetes_service_account.container_svc.metadata.0.name
+    kind      = "ServiceAccount"
+    name      = data.kubernetes_service_account.container_svc.metadata.0.name
+    namespace = var.xnat_namespace
   }
 
   role_ref {
@@ -73,7 +68,7 @@ resource "kubernetes_cluster_role_binding" "container_svc" {
   subject {
     kind      = "ServiceAccount"
     name      = data.kubernetes_service_account.container_svc.metadata.0.name
-    namespace = kubernetes_namespace.container_svc.metadata.0.name
+    namespace = var.xnat_namespace
   }
 
   role_ref {
@@ -81,14 +76,16 @@ resource "kubernetes_cluster_role_binding" "container_svc" {
     name      = kubernetes_cluster_role.container_svc.metadata.0.name
     api_group = "rbac.authorization.k8s.io"
   }
-
 }
 
-#apiVersion: v1
-#kind: Secret
-#metadata:
-#  name: ${service_account_secret}
-#  namespace: ${namespace}
-#  annotations:
-#    kubernetes.io/service-account.name: ${service_account}
-#type: kubernetes.io/service-account-token
+resource "kubernetes_secret" "token" {
+  metadata {
+    name      = "${var.xnat_web_service_account}-token"
+    namespace = var.xnat_namespace
+    annotations = {
+      "kubernetes.io/service-account.name" = data.kubernetes_service_account.container_svc.metadata.0.name
+    }
+  }
+
+  type = "kubernetes.io/service-account-token"
+}
