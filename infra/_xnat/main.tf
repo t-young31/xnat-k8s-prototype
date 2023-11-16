@@ -75,17 +75,7 @@ resource "helm_release" "xnat" {
 
   set {
     name  = "xnat-web.autoscaling.enabled"
-    value = true
-  }
-
-  set {
-    name  = "xnat-web.autoscaling.minReplicas"
-    value = 1
-  }
-
-  set {
-    name  = "xnat-web.autoscaling.maxReplicas"
-    value = 2
+    value = false
   }
 
   depends_on = [
