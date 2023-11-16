@@ -1,6 +1,6 @@
 resource "aws_instance" "server" {
   ami           = data.aws_ami.rhel9.id
-  instance_type = "t3a.large"
+  instance_type = "t3a.medium"
   key_name      = aws_key_pair.ssh.key_name
 
   subnet_id              = var.subnet_id

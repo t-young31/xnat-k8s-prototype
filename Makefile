@@ -18,13 +18,15 @@ define terraform-destroy
 endef
 
 help:
-	grep '.*[:]$$' Makefile
+	grep '.*[:]$$' Makefile | tr -d ':'
 
 deploy:
 	$(call terraform-apply, ./infra)
 	. init.sh && echo "Run: export KUBECONFIG=$$KUBECONFIG"
 
 destroy:
+	$(call terraform-destroy, ./infra) || true
+	cd infra && terraform state rm module.xnat.helm_release.longhorn
 	$(call terraform-destroy, ./infra)
 
 aws-login:
