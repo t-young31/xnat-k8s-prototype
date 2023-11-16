@@ -43,3 +43,13 @@ resource "aws_security_group_rule" "all_https_from_cloudflare" {
   ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
   security_group_id = aws_security_group.default.id
 }
+
+resource "aws_security_group_rule" "self_ingress" {
+  type              = "ingress"
+  description       = "self ingress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  self              = true
+  security_group_id = aws_security_group.default.id
+}
