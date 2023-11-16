@@ -1,8 +1,12 @@
 # xnat-k8s-prototype
 
 ## 🚀 Deployment
+### Prerequisites
+- An AWS account with a VPC containing a public subnet
+- A Cloudflare account containing a DNS zone
+
 0. Create a `.env` file from `.env.sample` and ensure Cloudflare TLS is in 'flexible' mode
-1. Run `make aws`
+1. Run `make deploy`
 
 ## Notes
 - Storage class must support `ReadWriteMany`

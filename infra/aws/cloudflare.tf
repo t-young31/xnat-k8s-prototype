@@ -4,7 +4,7 @@ data "cloudflare_zone" "app" {
 
 resource "cloudflare_record" "app" {
   zone_id = data.cloudflare_zone.app.id
-  name    = var.subdomain
+  name    = var.cloudflare_subdomain
   value   = aws_instance.server.public_ip
   type    = "A"
   proxied = true

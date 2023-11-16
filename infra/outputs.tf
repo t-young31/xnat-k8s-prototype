@@ -1,7 +1,7 @@
 output "url" {
-  value = "https://${local.fqdn}"
+  value = "https://${module.aws.fqdn}"
 }
 
 output "ssh" {
-  value = local.ssh_command
+  value = module.aws.ssh_command
 }

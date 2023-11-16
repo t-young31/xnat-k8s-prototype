@@ -11,7 +11,7 @@ resource "aws_instance" "server" {
   })
 
   user_data = templatefile(
-    "${path.module}/cloud-init.tmpl.sh",
+    "${path.module}/scripts/cloud-init.tmpl.sh",
     {
       k3s_version = local.k3s_version
     }
@@ -46,7 +46,7 @@ resource "null_resource" "get_kubeconfig" {
   provisioner "local-exec" {
     command = join(" && ", [
       "scp -i ${local.ssh_key_path} -o 'StrictHostKeyChecking no' ${local.ssh_host}:/etc/rancher/k3s/k3s.yaml ${var.kubeconfig_path}",
-      "python scripts/replace_ip_in_kubeconfig.py ${var.kubeconfig_path} ${aws_instance.server.public_ip}"
+      "python ${path.module}/scripts/replace_ip_in_kubeconfig.py ${var.kubeconfig_path} ${aws_instance.server.public_ip}"
     ])
   }
 

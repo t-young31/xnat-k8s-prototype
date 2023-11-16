@@ -20,11 +20,11 @@ endef
 help:
 	grep '.*[:]$$' Makefile
 
-aws:
+deploy:
 	$(call terraform-apply, ./infra)
 	. init.sh && echo "Run: export KUBECONFIG=$$KUBECONFIG"
 
-aws-destroy:
+destroy:
 	$(call terraform-destroy, ./infra)
 
 aws-login:

@@ -1,5 +1,6 @@
 variable "kubeconfig_path" {
-  type = string
+  type        = string
+  description = "Absolute path to the kubeconfig file that will be created"
 }
 
 variable "aws_prefix" {
