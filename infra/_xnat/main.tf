@@ -1,12 +1,12 @@
 resource "helm_release" "xnat" {
   name             = "xnat"
   namespace        = "xnat"
-  repository       = "https://australian-imaging-service.github.io/charts"
-  chart            = "xnat"
+  chart            = "${path.module}/xnat-helm-charts/releases/xnat"
   version          = "1.1.7"
   create_namespace = true
 
-  wait = false
+  wait              = false
+  dependency_update = true
 
   set {
     name  = "postgresql.postgresqlPassword"
@@ -20,12 +20,17 @@ resource "helm_release" "xnat" {
 
   set {
     name  = "xnat-web.resources.limits.cpu"
-    value = "2000m"
+    value = "1500m"
   }
 
   set {
     name  = "xnat-web.resources.limits.memory"
-    value = "8000Mi"
+    value = "4000Mi"
+  }
+
+  set {
+    name  = "xnat-web.resources.requests.memory"
+    value = "4000Mi"
   }
 
   set {
@@ -66,6 +71,21 @@ resource "helm_release" "xnat" {
   set {
     name  = "xnat-web.plugins.container-service[0].provider.id"
     value = "null" # can be any value..
+  }
+
+  set {
+    name  = "xnat-web.autoscaling.enabled"
+    value = true
+  }
+
+  set {
+    name  = "xnat-web.autoscaling.minReplicas"
+    value = 1
+  }
+
+  set {
+    name  = "xnat-web.autoscaling.maxReplicas"
+    value = 2
   }
 
   depends_on = [
