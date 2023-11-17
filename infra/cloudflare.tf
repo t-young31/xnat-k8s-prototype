@@ -3,9 +3,14 @@ data "cloudflare_zone" "app" {
 }
 
 resource "cloudflare_record" "app" {
+  for_each = {
+    xnat  = var.cloudflare_xnat_subdomain,
+    omero = var.cloudflare_omero_subdomain
+  }
+
   zone_id = data.cloudflare_zone.app.id
-  name    = var.cloudflare_subdomain
-  value   = aws_instance.server.public_ip
+  name    = each.value
+  value   = module.aws.server_public_ip
   type    = "A"
   proxied = true
 }

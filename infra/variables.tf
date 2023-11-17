@@ -18,6 +18,10 @@ variable "cloudflare_zone_name" {
   type = string
 }
 
-variable "cloudflare_subdomain" {
+variable "cloudflare_xnat_subdomain" {
+  type = string
+}
+
+variable "cloudflare_omero_subdomain" {
   type = string
 }

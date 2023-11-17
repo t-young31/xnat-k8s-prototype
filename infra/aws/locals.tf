@@ -1,5 +1,4 @@
 locals {
-  fqdn = "${cloudflare_record.app.name}.${var.cloudflare_zone_name}"
 
   ec2_username = "ec2-user"
   ssh_key_name = "id_rsa"

@@ -1,5 +1,9 @@
-output "url" {
-  value = "https://${module.aws.fqdn}"
+#output "xnat_url" {
+#  value = "https://${module.xnat.fqdn}"
+#}
+
+output "omero_url" {
+  value = "https://${module.omero.fqdn}"
 }
 
 output "ssh" {
