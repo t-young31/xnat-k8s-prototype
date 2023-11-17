@@ -88,21 +88,6 @@ resource "helm_release" "server" {
   }
 
   set {
-    name  = "ingress.hosts[0]"
-    value = var.fqdn
-  }
-
-  set {
-    name  = "ingress.tls[0].hosts[0]"
-    value = var.fqdn
-  }
-
-  set {
-    name  = "ingress.enabled"
-    value = true
-  }
-
-  set {
     name  = "defaultRootPassword"
     value = random_password.omero_root.result
   }

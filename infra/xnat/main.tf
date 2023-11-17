@@ -5,12 +5,12 @@ resource "helm_release" "xnat" {
   version          = "1.1.7"
   create_namespace = true
 
-  wait              = false
+  wait              = true
   dependency_update = true
 
   set {
     name  = "postgresql.postgresqlPassword"
-    value = random_password.posgres_password.result
+    value = random_password.postgresql.result
   }
 
   set {
@@ -35,7 +35,7 @@ resource "helm_release" "xnat" {
 
   set {
     name  = "xnat-web.postgresql.postgresqlPassword"
-    value = random_password.posgres_password.result
+    value = random_password.postgresql.result
   }
 
   set {
@@ -77,14 +77,9 @@ resource "helm_release" "xnat" {
     name  = "xnat-web.autoscaling.enabled"
     value = false
   }
-
-  depends_on = [
-    null_resource.unset_local_default_storage_class,
-    helm_release.longhorn
-  ]
 }
 
-resource "random_password" "posgres_password" {
+resource "random_password" "postgresql" {
   length  = 32
   special = false
 }

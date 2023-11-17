@@ -1,9 +1,21 @@
-#output "xnat_url" {
-#  value = "https://${module.xnat.fqdn}"
-#}
+output "xnat" {
+  value = {
+    url      = "https://${module.xnat.fqdn}"
+    username = module.xnat.username
+    password = module.xnat.password
+  }
 
-output "omero_url" {
-  value = "https://${module.omero.fqdn}"
+  sensitive = true
+}
+
+output "omero" {
+  value = {
+    url      = "https://${module.omero.fqdn}"
+    username = module.omero.username
+    password = module.omero.password
+  }
+
+  sensitive = true
 }
 
 output "ssh" {

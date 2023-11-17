@@ -22,11 +22,12 @@ help:
 
 deploy:
 	$(call terraform-apply, ./infra)
+	cd infra && terraform output -json omero && terraform output -json xnat
 	. init.sh && echo "Run: export KUBECONFIG=$$KUBECONFIG"
 
 destroy:
 	$(call terraform-destroy, ./infra) || true
-	cd infra && terraform state rm module.xnat.helm_release.longhorn
+	cd infra && terraform state rm module.aws.helm_release.longhorn
 	$(call terraform-destroy, ./infra)
 
 aws-login:

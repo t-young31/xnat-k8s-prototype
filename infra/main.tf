@@ -11,23 +11,22 @@ module "aws" {
   providers = {
     aws        = aws
     cloudflare = cloudflare
-
   }
 }
 
-#module "xnat" {
-#  source = "./xnat" # Note: helm provider needs a name != "xnat". See: https://github.com/hashicorp/terraform-provider-helm/issues/735
-#
-#  fqdn            = "${cloudflare_record.app["xnat"].name}.${var.cloudflare_zone_name}"
-#  kubeconfig_path = var.kubeconfig_path
-#
-#  providers = {
-#    kubernetes = kubernetes
-#    helm       = helm
-#  }
-#
-#  depends_on = [module.aws]
-#}
+module "xnat" {
+  source = "./xnat"
+
+  fqdn            = "${cloudflare_record.app["xnat"].name}.${var.cloudflare_zone_name}"
+  kubeconfig_path = var.kubeconfig_path
+
+  providers = {
+    kubernetes = kubernetes
+    helm       = helm
+  }
+
+  depends_on = [module.aws]
+}
 
 module "omero" {
   source = "./omero"
